@@ -18,14 +18,14 @@ featuresNewname <- gsub('[-()]', '', featuresNewname)
 
 #load datas
 ## test data
-data_test <- read.table("./test/X_test.txt")
+data_test <- read.table("./test/X_test.txt")[data_wanted]
 testActivities <- read.table("./test/Y_test.txt") 
 testSubjects <- read.table("./test/subject_test.txt")
 test_final <- cbind(testSubjects, testActivities, data_test)
 
 # train data
 
-data_train <- read.table("./train/X_train.txt")
+data_train <- read.table("./train/X_train.txt")[data_wanted]
 trainActivities <- read.table("./train/Y_train.txt") 
 trainSubjects <- read.table("./train/subject_train.txt")
 train_final <- cbind(trainSubjects, trainActivities, data_train)
