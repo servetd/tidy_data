@@ -1,3 +1,4 @@
+
 #Read realted files
 activity_labels <- read.table("activity_labels.txt")
 features <- read.table("features.txt")
@@ -32,9 +33,11 @@ train_final <- cbind(trainSubjects, trainActivities, data_train)
 #Merge data
 final_data <- rbind(train_final, test_final)
 colnames(final_data) <- c("subject", "activity", featuresNewname)
-# Calculate mean
+# Calculate mean and sd for each measurements
 final_data_melted <- melt(final_data, id = c("subject", "activity"))
 final_data_mean <- dcast(final_data_melted, subject + activity ~ variable, mean)
+final_data_sd <- dcast(final_data_melted, subject + activity ~ variable, sd)
+final_data_mean_sd <- cbind(final_data_mean, final_data_sd)
 
 # write tidy.txt
 write.table(final_data_mean, "tidy.txt", row.names = FALSE)
