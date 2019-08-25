@@ -17,4 +17,4 @@ run_analysis.R performs the data preparation and then followed by the 5 steps re
 7. descriptive activity names to name the activities in the data set
 8. labels the data set with descriptive variable names.
 9. write tidy.txt means  for each measurement.
-tidy.txt is the exported final data after going through all the sequences described above.
+</br>tidy.txt is the exported final data after going through all the sequences described above.
