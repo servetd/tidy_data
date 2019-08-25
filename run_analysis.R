@@ -1,43 +1,44 @@
+# first download data "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip" and uzzip tidy_data directory
+# Set working directory tidy_data
 
-#Read realted files
-activity_labels <- read.table("activity_labels.txt")
-features <- read.table("features.txt")
-features_infor <- read.table ("features_info.txt")
-## remove unrelated col.
-activity_labels <- activity_labels[,2]
-features<- features[,2]
-# Convert class of features to charecter
-features <- as.character(features)
-# rearranges names of collums 
-data_wanted <- grep(".*mean.*|.*std.*", features)
-featuresNewname <- features[grep(".*mean.*|.*std.*", features)]
-featuresNewname <- gsub('-mean', 'Mean', featuresNewname)
-featuresNewname <- gsub('-std', 'Std', featuresNewname)
-featuresNewname <- gsub('[-()]', '', featuresNewname)
+# Read related file 
+features <- read.table("features.txt", col.names = c("order","functions"))
+features <- features[,2]
+activities <- read.table("activity_labels.txt", col.names = c("code", "activity"))
+
+#Tidy names of data
+features<-gsub("Acc", "Accelerometer", features)
+features<-gsub("Gyro", "Gyroscope", features)
+features<-gsub("BodyBody", "Body", features)
+features<-gsub("Mag", "Magnitude", features)
+features<-gsub("^t", "Time", features)
+features<-gsub("^f", "Frequency", features)
+features<-gsub("tBody", "TimeBody", features)
+features<-gsub("-mean()", "Mean", features, ignore.case = TRUE)
+features<-gsub("-std()", "Std", features, ignore.case = TRUE)
+features<-gsub("-freq()", "Frequency", features, ignore.case = TRUE)
+features<-gsub("angle", "Angle", features)
+features<-gsub("gravity", "Gravity", features)
+features<-gsub("[-()]", "", features)
 
 
-#load datas
-## test data
-data_test <- read.table("./test/X_test.txt")[data_wanted]
-testActivities <- read.table("./test/Y_test.txt") 
-testSubjects <- read.table("./test/subject_test.txt")
-test_final <- cbind(testSubjects, testActivities, data_test)
 
-# train data
+# read data for each file
+subject_test <- read.table("./test/subject_test.txt", col.names = "subject")
+x_test <- read.table("./test/X_test.txt", col.names = features)
+y_test <- read.table("./test/y_test.txt", col.names = "code")
+subject_train <- read.table("./train/subject_train.txt", col.names = "subject")
+x_train <- read.table("./train/X_train.txt", col.names = features)
+y_train <- read.table("./train/y_train.txt", col.names = "code")
 
-data_train <- read.table("./train/X_train.txt")[data_wanted]
-trainActivities <- read.table("./train/Y_train.txt") 
-trainSubjects <- read.table("./train/subject_train.txt")
-train_final <- cbind(trainSubjects, trainActivities, data_train)
 
-#Merge data
-final_data <- rbind(train_final, test_final)
-colnames(final_data) <- c("subject", "activity", featuresNewname)
-# Calculate mean and sd for each measurements
-final_data_melted <- melt(final_data, id = c("subject", "activity"))
-final_data_mean <- dcast(final_data_melted, subject + activity ~ variable, mean)
-final_data_sd <- dcast(final_data_melted, subject + activity ~ variable, sd)
-final_data_mean_sd <- cbind(final_data_mean, final_data_sd)
+# Merge data
+merged_data <- rbind ( cbind(subject_test,x_test,y_test ), cbind(subject_train,x_train,y_train))
 
+tidy_data <- merged_data %>% select(subject, code, contains("mean"), contains("Std"))
+
+#Calculate average
+final_data <- tidy_data %>% group_by(subject, code) %>% summarise_all(mean)
 # write tidy.txt
-write.table(final_data_mean, "tidy.txt", row.names = FALSE)
+write.table(final_data, "tidy.txt", row.name=FALSE)
+
