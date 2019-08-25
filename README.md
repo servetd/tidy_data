@@ -5,8 +5,8 @@
 Human Activity Recognition Using Smartphones Dataset
 Version 1.0
 # Files
-### "CodeBook.md" a code book that describes the variables, the data, and any transformations or work that I performed to clean up the data
-run_analysis.R performs the data preparation and then followed by the 5 steps required as described in the course project’s definition:
+<b>"CodeBook.md" </b> a code book that describes the variables, the data, and any transformations or work that I performed to clean up the data
+<b>run_analysis.R</b> performs the data preparation and then followed by the 5 steps required as described in the course project’s definition:
 
 1. Read realted files in main directory
 2. tidy names of colloums
