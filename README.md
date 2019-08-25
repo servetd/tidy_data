@@ -1,10 +1,10 @@
- Getting and Cleaning Data Course Project
+ #Getting and Cleaning Data Course Project
  This repository is a Servet Demir submission for Getting and Cleaning Data course project. 
  
-#Dataset
+# Dataset
 Human Activity Recognition Using Smartphones Dataset
 Version 1.0
-#Files
+# Files
 CodeBook.md a code book that describes the variables, the data, and any transformations or work that I performed to clean up the data
 run_analysis.R performs the data preparation and then followed by the 5 steps required as described in the course project’s definition:
 # tidy_data
